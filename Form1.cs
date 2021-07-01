@@ -15,6 +15,23 @@ namespace YoketoruVS21
     {
         const bool isDebug = true;
 
+        const int PlayerMax = 1;
+        const int EnemyMax = 3;
+        const int ItemMax = 3;
+        const int charMax = PlayerMax + EnemyMax + ItemMax;
+
+        Label[] chars = new Label[charMax];
+
+        const int PlayerIndex = 0;
+        const int EnemyIndex = PlayerIndex + PlayerMax;
+        const int ItemIndex = EnemyIndex + EnemyMax;
+
+        const string PlayerText = "(; ﾟдﾟ )";
+        const string EnemyText = "(# ﾟДﾟ)";
+        const string ItemText = "(´・ω・｀)";
+
+        static Random rand = new Random();
+
         enum State
         {
             None = -1,
@@ -33,10 +50,30 @@ namespace YoketoruVS21
         public Form1()
         {
             InitializeComponent();
+
+            for (int i = 0; i < charMax; i++)
+            {
+                chars[i] = new Label();
+                chars[i].AutoSize = true;
+                if (i == PlayerIndex)
+                {
+                    chars[i].Text = PlayerText;
+                }
+                else if (i < ItemIndex)
+                {
+                    chars[i].Text = EnemyText;
+                }
+                else
+                {
+                    chars[i].Text = ItemText;
+                }
+                Controls.Add(chars[i]);
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+             //デバッグ
             if(isDebug)
             {
                 if(GetAsyncKeyState((int)Keys.O) < 0)
@@ -55,8 +92,14 @@ namespace YoketoruVS21
             {
                 initProc();
             }
+
+            if (currentState == State.Game)
+            {
+                UpdateGame();
+            }
+
         }
-        
+
         void initProc()
         {
             currentState = nextState;
@@ -78,6 +121,13 @@ namespace YoketoruVS21
                     startbutton.Visible = false;
                     copyrightLabel.Visible = false;
                     hiLabel.Visible = false;
+
+                    for(int i = EnemyIndex; i < charMax; i++)
+                    {
+                        chars[i].Left = rand.Next(ClientSize.Width - chars[i].Width);
+                        chars[i].Top = rand.Next(ClientSize.Height - chars[i].Height);
+                    }
+
                     break;
                 case State.Gameover:
                     gameoverLabel.Visible = true;
@@ -89,6 +139,11 @@ namespace YoketoruVS21
                     break;
             }
 
+        }
+
+        void UpdateGame()
+        {
+            Point mp = PointToClient(MousePosition);
         }
 
         private void startbutton_Click(object sender, EventArgs e)
