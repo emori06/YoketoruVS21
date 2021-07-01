@@ -95,5 +95,10 @@ namespace YoketoruVS21
         {
             nextState = State.Game;
         }
+
+        private void titleButton_Click(object sender, EventArgs e)
+        {
+            nextState = State.Title;
+        }
     }
 }
