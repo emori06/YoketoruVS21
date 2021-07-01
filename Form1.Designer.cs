@@ -134,7 +134,7 @@ namespace YoketoruVS21
             this.titleButton.BackColor = System.Drawing.Color.Navy;
             this.titleButton.Font = new System.Drawing.Font("Yu Gothic UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.titleButton.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.titleButton.Location = new System.Drawing.Point(614, 345);
+            this.titleButton.Location = new System.Drawing.Point(337, 345);
             this.titleButton.Name = "titleButton";
             this.titleButton.Size = new System.Drawing.Size(126, 38);
             this.titleButton.TabIndex = 8;

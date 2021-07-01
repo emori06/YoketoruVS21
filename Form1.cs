@@ -44,7 +44,10 @@ namespace YoketoruVS21
                     nextState = State.Gameover;
                 }else
                 {
-                    nextState = State.Clear;
+                    if (GetAsyncKeyState((int)Keys.C) < 0)
+                    {
+                        nextState = State.Clear;
+                    }
                 }
             }
 
@@ -75,6 +78,14 @@ namespace YoketoruVS21
                     startbutton.Visible = false;
                     copyrightLabel.Visible = false;
                     hiLabel.Visible = false;
+                    break;
+                case State.Gameover:
+                    gameoverLabel.Visible = true;
+                    titleButton.Visible = true;
+                    break;
+                case State.Clear:
+                    clearLabel.Visible = true;
+                    titleButton.Visible = true;
                     break;
             }
 
