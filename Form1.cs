@@ -28,7 +28,7 @@ namespace YoketoruVS21
 
         const string PlayerText = "(; ﾟдﾟ )";
         const string EnemyText = "(# ﾟДﾟ)";
-        const string ItemText = "(´・ω・｀)";
+        const string ItemText = "□";
 
         static Random rand = new Random();
 
@@ -67,6 +67,7 @@ namespace YoketoruVS21
                 {
                     chars[i].Text = ItemText;
                 }
+                chars[i].Font = tempLabel.Font;
                 Controls.Add(chars[i]);
             }
         }
