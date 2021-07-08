@@ -92,11 +92,11 @@ namespace YoketoruVS21
             this.hiLabel.AutoSize = true;
             this.hiLabel.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.hiLabel.Font = new System.Drawing.Font("Yu Gothic UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.hiLabel.Location = new System.Drawing.Point(318, 257);
+            this.hiLabel.Location = new System.Drawing.Point(328, 257);
             this.hiLabel.Name = "hiLabel";
-            this.hiLabel.Size = new System.Drawing.Size(165, 25);
+            this.hiLabel.Size = new System.Drawing.Size(145, 25);
             this.hiLabel.TabIndex = 4;
-            this.hiLabel.Text = "HIGH_SCORE：100";
+            this.hiLabel.Text = "HIGH_SCORE：0";
             // 
             // leftLabel
             // 
@@ -177,6 +177,7 @@ namespace YoketoruVS21
             this.Controls.Add(this.titleLabel);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

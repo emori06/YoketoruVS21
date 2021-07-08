@@ -8,17 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.IO;
 
 namespace YoketoruVS21
 {
     public partial class Form1 : Form
     {
-        const bool isDebug = true;
+        const bool isDebug = false;
 
         const int speedMax = 20;
 
         const int PlayerMax = 1;
-        const int EnemyMax = 3;
+        const int EnemyMax = 30;
         const int ItemMax = 3;
         const int charMax = PlayerMax + EnemyMax + ItemMax;
         const int startTime = 100;
@@ -43,11 +44,11 @@ namespace YoketoruVS21
 
         enum State
         {
-            None = -1,
-            Title,
-            Game,
-            Gameover,
-            Clear
+            None = -1,  //無効
+            Title,      //タイトル
+            Game,       //ゲーム画面
+            Gameover,   //ゲームオーバー画面
+            Clear       //クリア画面
         }
 
         State currentState = State.None;
@@ -60,6 +61,17 @@ namespace YoketoruVS21
         {
             InitializeComponent();
 
+            if(File.Exists("hisc.txt"))
+            {
+                string hi = File.ReadAllText("hisc.txt");
+                string trimhi = hi.Trim();//空白や改行を消す
+                int fhi;
+                if(int.TryParse(trimhi, out fhi)){
+                    hiscore = fhi;
+                }
+            }
+
+            //Label[]の初期化
             for (int i = 0; i < charMax; i++)
             {
                 chars[i] = new Label();
@@ -98,6 +110,7 @@ namespace YoketoruVS21
                 }
             }
 
+            //メイン関数
             if(nextState != State.None)
             {
                 initProc();
@@ -117,6 +130,7 @@ namespace YoketoruVS21
 
             switch (currentState)
             {
+                //タイトルシーン
                 case State.Title:
                     titleLabel.Visible = true;
                     startbutton.Visible = true;
@@ -132,6 +146,7 @@ namespace YoketoruVS21
                     }
 
                     break;
+                //ゲームシーン
                 case State.Game:
                     titleLabel.Visible = false;
                     startbutton.Visible = false;
@@ -152,18 +167,23 @@ namespace YoketoruVS21
                     }
 
                     break;
+                //ゲームオーバーシーン
                 case State.Gameover:
                     gameoverLabel.Visible = true;
                     titleButton.Visible = true;
                     break;
+                //クリアシーン
                 case State.Clear:
                     clearLabel.Visible = true;
                     titleButton.Visible = true;
                     hiLabel.Visible = true;
+
                     if(time > hiscore)
                     {
                         hiscore = time;
                         hiLabel.Text = "HIGH_SCORE：" + hiscore;
+
+                        File.WriteAllText("hisc.txt", $"{hiscore}\n");
                     }
                     break;
             }
@@ -246,6 +266,11 @@ namespace YoketoruVS21
         private void titleButton_Click(object sender, EventArgs e)
         {
             nextState = State.Title;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //do nothing
         }
     }
 }
