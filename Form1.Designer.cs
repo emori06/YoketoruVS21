@@ -103,9 +103,9 @@ namespace YoketoruVS21
             this.leftLabel.Font = new System.Drawing.Font("Yu Gothic UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.leftLabel.Location = new System.Drawing.Point(714, 20);
             this.leftLabel.Name = "leftLabel";
-            this.leftLabel.Size = new System.Drawing.Size(58, 28);
+            this.leftLabel.Size = new System.Drawing.Size(47, 28);
             this.leftLabel.TabIndex = 5;
-            this.leftLabel.Text = "★:10";
+            this.leftLabel.Text = "■:3";
             // 
             // gameoverLabel
             // 

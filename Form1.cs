@@ -21,6 +21,9 @@ namespace YoketoruVS21
         const int EnemyMax = 3;
         const int ItemMax = 3;
         const int charMax = PlayerMax + EnemyMax + ItemMax;
+        const int startTime = 100;
+        int ItemCount = 0;
+        int time = 0;
 
         Label[] chars = new Label[charMax];
 
@@ -33,7 +36,7 @@ namespace YoketoruVS21
 
         const string PlayerText = "(; ﾟдﾟ )";
         const string EnemyText = "(# ﾟДﾟ)";
-        const string ItemText = "□";
+        const string ItemText = "■";
 
         static Random rand = new Random();
 
@@ -121,6 +124,12 @@ namespace YoketoruVS21
                     gameoverLabel.Visible = false;
                     clearLabel.Visible = false;
                     titleButton.Visible = false;
+
+                    for (int i = PlayerIndex; i < charMax; i++)
+                    {
+                        chars[i].Visible = false;
+                    }
+
                     break;
                 case State.Game:
                     titleLabel.Visible = false;
@@ -128,12 +137,17 @@ namespace YoketoruVS21
                     copyrightLabel.Visible = false;
                     hiLabel.Visible = false;
 
-                    for(int i = EnemyIndex; i < charMax; i++)
+                    ItemCount = ItemMax;
+                    leftLabel.Text = "■:" + ItemCount;
+                    time = startTime + 1;
+
+                    for (int i = PlayerIndex; i < charMax; i++)
                     {
                         chars[i].Left = rand.Next(ClientSize.Width - chars[i].Width);
                         chars[i].Top = rand.Next(ClientSize.Height - chars[i].Height);
                         vx[i] = rand.Next(-speedMax, speedMax + 1);
                         vy[i] = rand.Next(-speedMax, speedMax + 1);
+                        chars[i].Visible = true;
                     }
 
                     break;
@@ -156,8 +170,17 @@ namespace YoketoruVS21
             chars[PlayerIndex].Left = mp.X - chars[PlayerIndex].Width / 2;
             chars[PlayerIndex].Top = mp.Y - chars[PlayerIndex].Height / 2;
 
+            time--;
+            timeLabel.Text = "time:" + time;
+            if (time <= 0)
+            {
+                nextState = State.Gameover;
+            }
+
             for (int i = EnemyIndex; i < charMax; i++)
             {
+                if (!chars[i].Visible) continue;
+
                 chars[i].Left += vx[i];
                 chars[i].Top += vy[i];
 
@@ -178,15 +201,34 @@ namespace YoketoruVS21
                     vy[i] = (-Math.Abs(vy[i]));
                 }
 
-                if(     mp.X > chars[i].Left
-                   &&   mp.Y > chars[i].Top
-                   &&   mp.X < chars[i].Right
-                   &&   mp.Y < chars[i].Bottom)
+                if(     (mp.X >= chars[i].Left)
+                   &&   (mp.X < chars[i].Right)
+                   &&   (mp.Y >= chars[i].Top)
+                   &&   (mp.Y < chars[i].Bottom))
                 {
-                    MessageBox.Show("重なった");
+                    //MessageBox.Show("重なった");
+                    if(i < ItemIndex)
+                    {
+                        nextState = State.Gameover;
+                    }else
+                    {
+                        chars[i].Visible = false;
+                        
+                        ItemCount--;
+                        if(ItemCount <= 0)
+                        {
+                            nextState = State.Clear;
+                        }
+                        leftLabel.Text = "■:" + ItemCount;
+
+                        /*
+                        vx[i] = 0;
+                        vy[i] = 0;
+                        chars[i].Left = 10000;
+                        */
+                    }
                 }
             }
-            
         }
 
         private void startbutton_Click(object sender, EventArgs e)
