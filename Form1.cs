@@ -24,6 +24,7 @@ namespace YoketoruVS21
         const int startTime = 100;
         int ItemCount = 0;
         int time = 0;
+        int hiscore = 0;
 
         Label[] chars = new Label[charMax];
 
@@ -158,6 +159,12 @@ namespace YoketoruVS21
                 case State.Clear:
                     clearLabel.Visible = true;
                     titleButton.Visible = true;
+                    hiLabel.Visible = true;
+                    if(time > hiscore)
+                    {
+                        hiscore = time;
+                        hiLabel.Text = "HIGH_SCORE：" + hiscore;
+                    }
                     break;
             }
 
