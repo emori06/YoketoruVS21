@@ -15,12 +15,17 @@ namespace YoketoruVS21
     {
         const bool isDebug = true;
 
+        const int speedMax = 20;
+
         const int PlayerMax = 1;
         const int EnemyMax = 3;
         const int ItemMax = 3;
         const int charMax = PlayerMax + EnemyMax + ItemMax;
 
         Label[] chars = new Label[charMax];
+
+        int[] vx = new int[charMax];
+        int[] vy = new int[charMax];
 
         const int PlayerIndex = 0;
         const int EnemyIndex = PlayerIndex + PlayerMax;
@@ -127,6 +132,8 @@ namespace YoketoruVS21
                     {
                         chars[i].Left = rand.Next(ClientSize.Width - chars[i].Width);
                         chars[i].Top = rand.Next(ClientSize.Height - chars[i].Height);
+                        vx[i] = rand.Next(-speedMax, speedMax + 1);
+                        vy[i] = rand.Next(-speedMax, speedMax + 1);
                     }
 
                     break;
@@ -145,6 +152,41 @@ namespace YoketoruVS21
         void UpdateGame()
         {
             Point mp = PointToClient(MousePosition);
+
+            chars[PlayerIndex].Left = mp.X - chars[PlayerIndex].Width / 2;
+            chars[PlayerIndex].Top = mp.Y - chars[PlayerIndex].Height / 2;
+
+            for (int i = EnemyIndex; i < charMax; i++)
+            {
+                chars[i].Left += vx[i];
+                chars[i].Top += vy[i];
+
+                if(chars[i].Left < 0)
+                {
+                    vx[i] = (Math.Abs(vx[i]));
+                }
+                if(chars[i].Top < 0)
+                {
+                    vy[i] = (Math.Abs(vy[i]));
+                }
+                if (chars[i].Right > ClientSize.Width)
+                {
+                    vx[i] = (-Math.Abs(vx[i]));
+                }
+                if (chars[i].Bottom > ClientSize.Height)
+                {
+                    vy[i] = (-Math.Abs(vy[i]));
+                }
+
+                if(     mp.X > chars[i].Left
+                   &&   mp.Y > chars[i].Top
+                   &&   mp.X < chars[i].Right
+                   &&   mp.Y < chars[i].Bottom)
+                {
+                    MessageBox.Show("重なった");
+                }
+            }
+            
         }
 
         private void startbutton_Click(object sender, EventArgs e)
